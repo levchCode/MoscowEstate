@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Estater - оценка недвижимости в Москве</title>
+    </head>
+    <body>
+        <h1>Данные об объекте</h1>
+            <form action="/" method="POST">
+                Адрес объекта: <input name="addr" type="text">
+                <br>
+                <br>
+                Общая площадь: <input name="sq" type="number" step=".01">
+                <br>
+                <br>
+                Назначение объекта: 
+                <select name="purp">
+                    {% for i in purp %}
+                    <option value="{{loop.index0}}">{{ i }}</option>
+                    {% endfor %}
+                </select>
+                <br>
+                <br>
+                Тип объекта: 
+                <select name="type">
+                    {% for i in types %}
+                    <option value="{{loop.index0}}">{{ i }}</option>
+                    {% endfor %}
+                </select>
+                <br>
+                <br>
+                Вид договора: 
+                <select name="agreement">
+                    {% for i in agree %}
+                    <option value="{{loop.index0}}">{{ i }}</option>
+                    {% endfor %}
+                </select>
+                <br>
+                <br>
+                Дата оценки: <input name="date" type="date">
+                <br>
+                <br>
+                Класс помещения: 
+                <select name="class">
+                    {% for i in cls %}
+                    <option value="{{loop.index0}}">{{ i }}</option>
+                    {% endfor %}
+                </select>
+                <br>
+                <br>
+                Этажность здания: <input name="storyes" type="text">
+                <br>
+                <br>
+                Этаж расположения объекта: <input name="floor" type="text">
+                <br>
+                <br>
+                Статус продавца: 
+                <select name="seller">
+                    {% for i in seller %}
+                    <option value="{{loop.index0}}">{{ i }}</option>
+                    {% endfor %}
+                </select>
+                <br>
+                <br>
+                Операция: 
+                <select name="op">
+                    {% for i in op %}
+                    <option value="{{loop.index0}}">{{ i }}</option>
+                    {% endfor %}
+                </select>
+                <br>
+                <br>
+                <input type="submit" value="Узнать цены">
+            </form>
+            <br>
+            <br>
+        
+    </body>
+</html>

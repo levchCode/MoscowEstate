@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Estater - оценка недвижимости в Москве</title>
+    </head>
+    <body>
+        <h1>Данные об объекте</h1>
+            <form action="/" method="POST">
+
+                <h2>Исходное описание объекта</h2>
+
+                Адрес объекта: {{ i_data.addr }}
+                <br>
+                <br>
+                Дата оценки: <p name="date">{{ i_data.date }}</p>
+
+                Общая площадь: <p name="sq">{{ i_data.sq }}</p>
+
+                Назначение: <p name="purp">{{ i_data.purp }}</p>
+
+                Тип объекта: <p name="type">{{ i_data.type }}</p>
+
+                Вид договора: <p name="agreement">{{ i_data.agreement }}</p>
+
+                Класс помещения: <p name="class">{{ i_data.class }}</p>
+
+                Этажность здания: <p name="storyes">{{ i_data.storyes }}</p>
+
+                Этаж расположения объекта: <p name="floor">{{ i_data.floor }}</p>
+
+                Статус продавца: <p name="seller">{{ i_data.seller }}</p>
+
+                Операция: <p name="op">{{ i_data.op }}</p>
+
+
+                <h2>Дополнительные данные</h2>
+                <p>Сервис неправильно что-то определил? Поля ниже можно редактировать</p>
+              
+                Широта: <input value="{{ data.cords.sh }}" name="sh">
+                <br>
+                <br>
+                Долгота: <input value="{{ data.cords.d }}" name="d">
+                <br>
+                <br>
+                Время до метро: <input value="{{ data.metro }}" name="metro">
+                <br>
+                <br>
+                <img src="{{ data.pos.img }}">
+                <br>
+                <br>
+                Расположение: <select name="pos">
+                    <option value="0" {% if data.pos.label == 0 %} selected {% endif %}>Внутриквартальное</option>
+                    <option value="1" {% if data.pos.label == 1 %} selected {% endif %}>На красной линии</option>
+                    <option value="2" {% if data.pos.label == 2 %} selected {% endif %}>Первая линия второстепенной дороги</option>
+                </select>
+                <br>
+                <br>
+                <input onclick="value_property()" type="button" value="Потвердить и оценить">
+            </form>
+
+            <script>
+                async function value_property() {
+                    data = {};
+                    data.date = document.getElementsByName("date")[0].innerText;
+                    data.sq = document.getElementsByName("sq")[0].innerText;
+                    data.purp = document.getElementsByName("purp")[0].innerText;
+                    data.type = document.getElementsByName("type")[0].innerText;
+                    data.agreement = document.getElementsByName("agreement")[0].innerText;
+                    data.class = document.getElementsByName("class")[0].innerText;
+                    data.storyes = document.getElementsByName("storyes")[0].innerText;
+                    data.floor = document.getElementsByName("floor")[0].innerText;
+                    data.seller = document.getElementsByName("seller")[0].innerText;
+                    data.op = document.getElementsByName("op")[0].innerText;
+                    data.sh = document.getElementsByName("sh")[0].value;
+                    data.d = document.getElementsByName("d")[0].value;
+                    data.metro = document.getElementsByName("metro")[0].value;
+                    data.pos = document.getElementsByName("pos")[0].selectedIndex;
+                    
+                    const response = await fetch("/value", {
+                        method: 'POST', 
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    }).then(response => response.json()) 
+                    .then(data => {
+                        let node1 = document.createElement("p");
+                        let node2 = document.createElement("p");
+                        let node3 = document.createElement("p");
+
+                        node1.innerHTML = "Результаты оценки";
+                        node2.innerHTML = "Аренда: [" + data.rent.lower + " ; " + data.rent.avg + " ; " + data.rent.upper + "]"
+                        node3.innerHTML = "Продажа: [" + data.sell.lower + " ; " + data.sell.avg + " ; " + data.sell.upper + "]"
+                        document.body.appendChild(node1);
+                        document.body.appendChild(node2);
+                        document.body.appendChild(node3);
+                    });
+                }
+            </script>
+        
+    </body>
+</html>
